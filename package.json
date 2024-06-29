@@ -1,0 +1,40 @@
+{
+	"name": "icrypex-sdk",
+	"version": "1.0.0",
+	"description": "A comprehensive TypeScript SDK for interacting with the Icrypex cryptocurrency exchange API, supporting both REST and WebSocket interfaces.",
+	"main": "dist/index.js",
+	"types": "dist/types.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build",
+		"test": "echo \"Error: no tests specified\" && exit 1"
+	},
+	"exports": {
+		".": "./dist/index.js",
+		"./types": "./dist/types.js"
+	},
+	"files": [
+		"dist/**/*"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/HidayetCanOzcan/icrypex-sdk.git"
+	},
+	"homepage": "https://github.com/HidayetCanOzcan/icrypex-sdk#readme",
+	"keywords": [
+		"icrypex",
+		"crypto",
+		"sdk",
+		"typescript",
+		"api",
+		"trading",
+		"exchange",
+		"websockets"
+	],
+	"author": "Hidayet Can Özcan",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.14.9",
+		"typescript": "^5.5.2"
+	}
+}
