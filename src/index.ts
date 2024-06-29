@@ -1,5 +1,6 @@
 import {
 	GetAllOrdersParams,
+	GetExchangeInfoResponse,
 	GetOrdersParams,
 	GetSpotBalanceResponse,
 	GetUserTradesParams,
@@ -70,7 +71,7 @@ class IcrypexSDK {
 
 	// Public endpoints
 
-	async getExchangeInfo(): Promise<any> {
+	async getExchangeInfo(): Promise<GetExchangeInfoResponse> {
 		return this.request('/v1/exchange/info', { method: 'GET', headers: {} });
 	}
 

@@ -71,3 +71,45 @@ export type Balance = {
 	tryValue: string;
 	btcValue: string;
 };
+
+export type GetExchangeInfoResponse = {
+	assets: Asset[];
+	pairs: Pair[];
+	version: string;
+};
+
+export type Asset = {
+	symbol: string;
+	name: string;
+	categories: string[];
+	description: string;
+	type: string;
+	isEnabled: boolean;
+	isNew: boolean;
+	isWithdrawalEnabled: boolean;
+	isDepositEnabled: boolean;
+	precision: number;
+	displayPrecision: number;
+	minDeposit: string;
+	minWithdrawal: string;
+	updatedDate: number;
+	createdDate: number;
+};
+
+export type Pair = {
+	symbol: string;
+	base: string;
+	quote: string;
+	minExchangeValue: string;
+	minPrice: string;
+	maxPrice: string;
+	quantityPrecision: 2;
+	pricePrecision: 4;
+	totalPrecision: 2;
+	commissionPrecision: 8;
+	displayOrder: 1000;
+	status: string;
+	marketTypes: string[];
+	orderTypes: string[];
+	tickSize: string;
+};
