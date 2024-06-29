@@ -113,3 +113,18 @@ export type Pair = {
 	orderTypes: string[];
 	tickSize: string;
 };
+
+export type Ticker = {
+	symbol: string;
+	last: string;
+	ask: string;
+	bid: string;
+	high: string;
+	low: string;
+	avg: string;
+	change: string;
+	qty: string;
+	volume: string;
+};
+
+export type GetTickersRepsonse = Ticker[];

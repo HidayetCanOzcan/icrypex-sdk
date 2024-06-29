@@ -3,6 +3,7 @@ import {
 	GetExchangeInfoResponse,
 	GetOrdersParams,
 	GetSpotBalanceResponse,
+	GetTickersRepsonse,
 	GetUserTradesParams,
 	HttpMethod,
 	KLineParams,
@@ -75,7 +76,7 @@ class IcrypexSDK {
 		return this.request('/v1/exchange/info', { method: 'GET', headers: {} });
 	}
 
-	async getTickers(): Promise<any> {
+	async getTickers(): Promise<GetTickersRepsonse> {
 		return this.request('/v1/tickers', { method: 'GET', headers: {} });
 	}
 
