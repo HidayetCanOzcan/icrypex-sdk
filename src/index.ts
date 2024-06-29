@@ -58,7 +58,7 @@ class IcrypexSDK {
 			'ICX-API-KEY': this.apiKey,
 			'ICX-SIGN': signature,
 			'ICX-TS': timestamp.toString(),
-			'ICX-NONCE': '15000', // You may want to make this configurable
+			'ICX-NONCE': Date.now().toString(),
 		};
 
 		const options: RequestOptions = { method, headers };
