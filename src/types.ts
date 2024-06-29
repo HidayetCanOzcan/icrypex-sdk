@@ -57,3 +57,17 @@ export type OHLCParams = {
 	from: number;
 	to: number;
 };
+
+export type GetSpotBalanceResponse = Balance[];
+
+export type Balance = {
+	asset: string;
+	order: string;
+	request: string;
+	locked: string;
+	blocked: string;
+	total: string;
+	available: string;
+	tryValue: string;
+	btcValue: string;
+};

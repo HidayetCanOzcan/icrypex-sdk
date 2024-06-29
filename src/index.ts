@@ -1,6 +1,7 @@
 import {
 	GetAllOrdersParams,
 	GetOrdersParams,
+	GetSpotBalanceResponse,
 	GetUserTradesParams,
 	HttpMethod,
 	KLineParams,
@@ -102,7 +103,7 @@ class IcrypexSDK {
 
 	// Authenticated endpoints
 
-	async getSpotBalance(): Promise<any> {
+	async getSpotBalance(): Promise<GetSpotBalanceResponse> {
 		return this.authenticatedRequest('GET', '/sapi/v1/wallet');
 	}
 
