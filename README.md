@@ -2,7 +2,7 @@
 
 `icrypex-sdk` is a comprehensive TypeScript SDK designed to simplify and enhance the interaction with the Icrypex cryptocurrency exchange. It supports both REST and WebSocket interfaces, providing developers with easy access to market data, account management, trading operations, and real-time updates.
 
-## Features
+## Features (Will be complete at version 1.0.0)
 
 - **Complete API Coverage**: Covers all available REST and WebSocket endpoints provided by Icrypex.
 - **TypeScript Support**: Fully typed to help you catch errors at compile time.
