@@ -6,7 +6,7 @@ describe('getExchangeInfo Method', () => {
 	let sdk: IcrypexSDK;
 
 	beforeEach(() => {
-		sdk = new IcrypexSDK(process.env.API_KEY!, process.env.API_SECRET!);
+		sdk = new IcrypexSDK('apikey', btoa('apisecret'));
 		(global.fetch as jest.Mock).mockClear();
 	});
 

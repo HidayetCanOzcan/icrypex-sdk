@@ -1,14 +1,13 @@
 import { IcrypexSDK } from '..';
 import { Ticker } from '../types';
 
-// Mock fetch globally
 global.fetch = jest.fn();
 
 describe('getTickers Method', () => {
 	let sdk: IcrypexSDK;
 
 	beforeEach(() => {
-		sdk = new IcrypexSDK(process.env.API_KEY!, process.env.API_SECRET!);
+		sdk = new IcrypexSDK('apikey', btoa('apisecret'));
 		(global.fetch as jest.Mock).mockClear();
 	});
 
