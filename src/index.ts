@@ -1,15 +1,19 @@
 import {
+	CancelOrderResponse,
 	GetAllOrdersParams,
 	GetExchangeInfoResponse,
+	GetOpenOrdersParams,
+	GetOpenOrdersResponse,
 	GetOrderBookResponse,
-	GetOrdersParams,
 	GetSpotBalanceResponse,
 	GetTickersRepsonse,
 	GetUserTradesParams,
+	GetUserTradesResponse,
 	HttpMethod,
 	KLineParams,
 	OHLCParams,
-	OrderParams,
+	PlaceOrderParams,
+	PlaceOrderResponse,
 	RequestOptions,
 } from './types';
 
@@ -144,25 +148,25 @@ class IcrypexSDK {
 		return this.authenticatedRequest('GET', '/sapi/v1/wallet');
 	}
 
-	async placeOrder(orderData: OrderParams): Promise<any> {
+	async placeOrder(orderData: PlaceOrderParams): Promise<PlaceOrderResponse> {
 		return this.authenticatedRequest('POST', '/sapi/v1/orders', orderData);
 	}
 
-	async cancelOrder(orderId: string): Promise<any> {
+	async cancelOrder(orderId: string): Promise<CancelOrderResponse> {
 		return this.authenticatedRequest('DELETE', `/sapi/v1/orders?orderId=${orderId}`);
 	}
 
-	async getOpenOrders(params: GetOrdersParams = {}): Promise<any> {
+	async getOpenOrders(params: GetOpenOrdersParams): Promise<GetOpenOrdersResponse> {
 		const queryString = new URLSearchParams(params as any).toString();
 		return this.authenticatedRequest('GET', `/sapi/v1/orders?${queryString}`);
 	}
 
-	async getAllOrders(params: GetAllOrdersParams): Promise<any> {
+	async getAllOrders(params: GetAllOrdersParams): Promise<GetOpenOrdersResponse> {
 		const queryString = new URLSearchParams(params as any).toString();
 		return this.authenticatedRequest('GET', `/sapi/v1/orders/history?${queryString}`);
 	}
 
-	async getUserTrades(params: GetUserTradesParams): Promise<any> {
+	async getUserTrades(params: GetUserTradesParams): Promise<GetUserTradesResponse> {
 		const queryString = new URLSearchParams(params as any).toString();
 		return this.authenticatedRequest('GET', `/sapi/v1/trades?${queryString}`);
 	}

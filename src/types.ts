@@ -1,5 +1,39 @@
 export type HttpMethod = 'GET' | 'POST' | 'DELETE';
 
+export enum OrderStatuses {
+	open = 'OPEN',
+	fill = 'FILL',
+	cancel = 'CANCEL',
+}
+
+export enum OrderTypes {
+	limit = 'LIMIT',
+	market = 'MARKET',
+	stop_limit = 'STOP_LIMIT',
+	stop_market = 'STOP_MARKET',
+}
+
+export enum OrderTradeSides {
+	buy = 'BUY',
+	sell = 'SELL',
+}
+
+export enum Spot {
+	spot = 'SPOT',
+}
+
+export enum InsertType {
+	default = 'DEFAULT',
+	borrow = 'BORROW',
+	repay = 'REPAY',
+}
+
+export enum PaginationType {
+	limit = 'LIMIT',
+	market = 'MARKET',
+	stop = 'STOP',
+}
+
 export type RequestOptions = {
 	method: HttpMethod;
 	headers: Record<string, string>;
@@ -7,34 +41,31 @@ export type RequestOptions = {
 };
 
 export type PaginationParams = {
-	page?: number;
-	limit?: number;
+	type?: PaginationType;
+	page: number;
+	limit: number;
 };
 
-export type OrderParams = {
+export type PlaceOrderParams = {
 	symbol: string;
-	type: 'MARKET' | 'LIMIT' | 'STOP_MARKET' | 'STOP_LIMIT';
-	side: 'BUY' | 'SELL';
+	type: OrderTypes;
+	side: OrderTradeSides;
 	price?: string;
 	quantity?: string;
 	total?: string;
 	triggerPrice?: string;
 	clientId?: string;
-	insertType?: 'DEFAULT' | 'BORROW' | 'REPAY';
+	insertType?: InsertType;
 };
 
-export type GetOrdersParams = PaginationParams & {
-	type?: 'LIMIT' | 'MARKET' | 'STOP';
-	symbol?: string;
-};
+export type GetOpenOrdersParams = PaginationParams;
 
 export type GetAllOrdersParams = PaginationParams & {
 	from: number;
 	to: number;
-	status?: 'OPEN' | 'FILL' | 'CANCEL';
+	status?: OrderStatuses;
 	symbol?: string;
-	type?: 'LIMIT' | 'MARKET' | 'STOP';
-	side?: 'BUY' | 'SELL';
+	side?: OrderTradeSides;
 };
 
 export type GetUserTradesParams = PaginationParams & {
@@ -94,6 +125,10 @@ export type Asset = {
 	minWithdrawal: string;
 	updatedDate: number;
 	createdDate: number;
+	limitWithdrawal24h: string;
+	limitWithdrawal30d: string;
+	limitDeposit24h: string;
+	limitDeposit30d: string;
 };
 
 export type Pair = {
@@ -112,6 +147,7 @@ export type Pair = {
 	marketTypes: string[];
 	orderTypes: string[];
 	tickSize: string;
+	isEnabled: boolean;
 };
 
 export type Ticker = {
@@ -130,7 +166,80 @@ export type Ticker = {
 export type GetTickersRepsonse = Ticker[];
 
 export type GetOrderBookResponse = {
-	asks: string[];
-	bids: [];
+	asks: ask[];
+	bids: bid[];
 	pairSymbol: string;
+};
+
+export type ask = {
+	p: string;
+	q: string;
+};
+export type bid = {
+	p: string;
+	q: string;
+};
+
+export type PlaceOrderResponse = {
+	id: string;
+	ok: string;
+	pairSymbol: string;
+	status: string;
+	quantity: string;
+	leftQuantity: string;
+	total: string;
+	matchedTotal: string;
+	trades: Trade[];
+};
+
+export type Trade = {
+	quantity: string;
+	price: string;
+};
+
+export type CancelOrderResponse = {
+	ok: boolean;
+	id: string;
+	code: string;
+};
+export type PaginationResponse<I> = {
+	indexFrom: number;
+	pageIndex: number;
+	pageSize: number;
+	totalPages: number;
+	totalCount: number;
+	hasNextPage: boolean;
+	hasPreviousPage: boolean;
+	items: I[];
+};
+
+export type GetOpenOrdersResponse = PaginationResponse<OrderItem>;
+
+export type OrderItem = {
+	id: number;
+	symbol: string;
+	createdDate: number;
+	updatedDate: number;
+	price: string;
+	quantity: string;
+	leftQuantity: string;
+	triggerPrice: string;
+	total: string;
+	side: string;
+	status: string;
+	type: string;
+	clientId: string;
+};
+
+export type GetUserTradesResponse = PaginationResponse<TradeItem>;
+
+export type TradeItem = {
+	date: number;
+	orderId: number;
+	pairSymbol: string;
+	side: OrderTradeSides;
+	quantity: string;
+	price: string;
+	fee: string;
+	total: string;
 };
