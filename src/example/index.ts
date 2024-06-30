@@ -1,4 +1,5 @@
 import { IcrypexSDK, IcrypexWebSocket } from '..';
+import { OrderTradeSides, OrderTypes } from '../types';
 
 const sdk = new IcrypexSDK('YOUR_API_KEY', 'YOUR_API_SECRET');
 const ws = new IcrypexWebSocket('YOUR_API_KEY', 'YOUR_API_SECRET');
@@ -13,8 +14,8 @@ const ws = new IcrypexWebSocket('YOUR_API_KEY', 'YOUR_API_SECRET');
 
 		const orderResult = await sdk.placeOrder({
 			symbol: 'BTCUSDT',
-			type: 'LIMIT',
-			side: 'BUY',
+			type: OrderTypes.limit,
+			side: OrderTradeSides.buy,
 			price: '30000',
 			quantity: '0.001',
 		});
