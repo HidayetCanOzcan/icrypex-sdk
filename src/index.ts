@@ -1,6 +1,7 @@
 import {
 	GetAllOrdersParams,
 	GetExchangeInfoResponse,
+	GetOrderBookResponse,
 	GetOrdersParams,
 	GetSpotBalanceResponse,
 	GetTickersRepsonse,
@@ -80,7 +81,7 @@ class IcrypexSDK {
 		return this.request('/v1/tickers', { method: 'GET', headers: {} });
 	}
 
-	async getOrderBook(symbol: string): Promise<any> {
+	async getOrderBook(symbol: string): Promise<GetOrderBookResponse> {
 		return this.request(`/v1/orderbook?symbol=${symbol}`, { method: 'GET', headers: {} });
 	}
 
