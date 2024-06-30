@@ -128,3 +128,9 @@ export type Ticker = {
 };
 
 export type GetTickersRepsonse = Ticker[];
+
+export type GetOrderBookResponse = {
+	asks: string[];
+	bids: [];
+	pairSymbol: string;
+};
