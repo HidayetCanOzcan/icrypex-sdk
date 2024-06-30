@@ -2,6 +2,8 @@ import {
 	CancelOrderResponse,
 	GetAllOrdersParams,
 	GetExchangeInfoResponse,
+	GetKLineDataResponse,
+	GetLastTradesResponse,
 	GetOpenOrdersParams,
 	GetOpenOrdersResponse,
 	GetOrderBookResponse,
@@ -38,6 +40,10 @@ class IcrypexSDK {
 
 				const response = await fetch(url, options);
 
+				if (!response) {
+					throw new Error('Network error');
+				}
+
 				if (!response.ok) {
 					const errorText = await response.text();
 					console.error(`HTTP error! status: ${response.status}, body: ${errorText}`);
@@ -59,7 +65,7 @@ class IcrypexSDK {
 			} catch (error) {
 				console.error(`Attempt ${i + 1} failed:`, error);
 				if (i === retries - 1) throw error;
-				await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1))); // Artan bekleme süresi
+				await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
 			}
 		}
 	}
@@ -119,11 +125,11 @@ class IcrypexSDK {
 		return this.request(`/v1/orderbook?symbol=${symbol}`, { method: 'GET', headers: {} });
 	}
 
-	async getLastTrades(symbol: string): Promise<any> {
+	async getLastTrades(symbol: string): Promise<GetLastTradesResponse> {
 		return this.request(`/v1/trades/last?symbol=${symbol}`, { method: 'GET', headers: {} });
 	}
 
-	async getKLineData(params: KLineParams): Promise<any> {
+	async getKLineData(params: KLineParams): Promise<GetKLineDataResponse> {
 		if (!params.symbol || !params.from || !params.to || !params.resolution) {
 			throw new Error('Missing required parameters');
 		}
@@ -132,12 +138,12 @@ class IcrypexSDK {
 		return this.request(`/v1/trades/kline?${queryString}`, { method: 'GET', headers: {} });
 	}
 
-	async getKLineHistory(params: KLineParams): Promise<any> {
+	async getKLineHistory(params: KLineParams): Promise<GetKLineDataResponse> {
 		const queryString = new URLSearchParams(params as any).toString();
 		return this.request(`/sapi/v1/trades/kline/history?${queryString}`, { method: 'GET', headers: {} });
 	}
 
-	async getOHLC(params: OHLCParams): Promise<any> {
+	async getOHLC(params: OHLCParams): Promise<GetKLineDataResponse> {
 		const queryString = new URLSearchParams(params as any).toString();
 		return this.request(`/sapi/v1/trades/ohlc?${queryString}`, { method: 'GET', headers: {} });
 	}

@@ -72,7 +72,7 @@ export type GetUserTradesParams = PaginationParams & {
 	from: number;
 	to: number;
 	symbol?: string;
-	side?: 'BUY' | 'SELL';
+	side?: OrderTradeSides;
 	clientId?: string;
 };
 
@@ -189,10 +189,10 @@ export type PlaceOrderResponse = {
 	leftQuantity: string;
 	total: string;
 	matchedTotal: string;
-	trades: Trade[];
+	trades: OrderTrade[];
 };
 
-export type Trade = {
+export type OrderTrade = {
 	quantity: string;
 	price: string;
 };
@@ -242,4 +242,26 @@ export type TradeItem = {
 	price: string;
 	fee: string;
 	total: string;
+};
+
+export type GetLastTradesResponse = {
+	pairSymbol: string;
+	trades: Trade[];
+};
+
+export type Trade = {
+	d: number;
+	p: string;
+	q: string;
+	s: OrderTradeSides;
+};
+
+export type GetKLineDataResponse = {
+	s: string;
+	t: number[];
+	h: number[];
+	o: number[];
+	l: number[];
+	c: number[];
+	v: number[];
 };
