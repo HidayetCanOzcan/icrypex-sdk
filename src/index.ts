@@ -17,6 +17,7 @@ class IcrypexSDK {
 	private apiKey: string;
 	private apiSecret: string;
 	private baseUrl: string;
+	private lastRequestTime: number = 0;
 
 	constructor(apiKey: string, apiSecret: string, baseUrl: string = 'https://api.icrypex.com') {
 		this.apiKey = apiKey;
@@ -24,19 +25,48 @@ class IcrypexSDK {
 		this.baseUrl = baseUrl;
 	}
 
-	private async request(endpoint: string, options: RequestOptions): Promise<any> {
+	private async request(endpoint: string, options: RequestOptions, retries = 3): Promise<any> {
 		const url = `${this.baseUrl}${endpoint}`;
-		try {
-			const response = await fetch(url, options);
-			if (!response.ok) {
-				const errorBody = await response.json();
-				throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorBody)}`);
+
+		for (let i = 0; i < retries; i++) {
+			try {
+				await this.rateLimiter();
+
+				const response = await fetch(url, options);
+
+				if (!response.ok) {
+					const errorText = await response.text();
+					console.error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+
+				const text = await response.text();
+
+				if (!text) {
+					throw new Error('Empty response received');
+				}
+
+				try {
+					return JSON.parse(text);
+				} catch (e) {
+					console.error('Failed to parse JSON:', text);
+					throw new Error('Invalid JSON response');
+				}
+			} catch (error) {
+				console.error(`Attempt ${i + 1} failed:`, error);
+				if (i === retries - 1) throw error;
+				await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1))); // Artan bekleme süresi
 			}
-			return await response.json();
-		} catch (error) {
-			console.error('Request failed:', error);
-			throw error;
 		}
+	}
+
+	private async rateLimiter() {
+		const minTimeBetweenRequests = 1000;
+		const now = Date.now();
+		if (this.lastRequestTime && now - this.lastRequestTime < minTimeBetweenRequests) {
+			await new Promise((resolve) => setTimeout(resolve, minTimeBetweenRequests - (now - this.lastRequestTime)));
+		}
+		this.lastRequestTime = Date.now();
 	}
 
 	private async generateSignature(timestamp: number): Promise<string> {
@@ -90,6 +120,10 @@ class IcrypexSDK {
 	}
 
 	async getKLineData(params: KLineParams): Promise<any> {
+		if (!params.symbol || !params.from || !params.to || !params.resolution) {
+			throw new Error('Missing required parameters');
+		}
+
 		const queryString = new URLSearchParams(params as any).toString();
 		return this.request(`/v1/trades/kline?${queryString}`, { method: 'GET', headers: {} });
 	}
