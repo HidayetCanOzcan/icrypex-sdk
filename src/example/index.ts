@@ -70,12 +70,13 @@ const truncateOutput = (output: any) => {
 				to: Math.floor(Date.now() / 1000),
 			};
 			const ohlc = await sdk.getOHLC(ohlcParams);
-			if (!ohlc || Object.keys(ohlc).length === 0) {
-				throw new Error('Empty response received');
+			if (ohlc === null) {
+				console.log('No OHLC data available for the specified period.');
+			} else {
+				console.log('OHLC Data:', truncateOutput(ohlc));
 			}
-			console.log('OHLC Data:', truncateOutput(ohlc));
 		} catch (error) {
-			console.error('Failed to fetch OHLC data:', JSON.stringify(error));
+			console.error('Failed to fetch OHLC data:', error);
 		}
 		await sleep(2000);
 

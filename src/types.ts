@@ -265,3 +265,17 @@ export type GetKLineDataResponse = {
 	c: number[];
 	v: number[];
 };
+
+export type IcrypexConfig = {
+	baseUrl?: string;
+	timeout?: number;
+	maxRetries?: number;
+	logger?: IcrypexLogger;
+};
+
+export type IcrypexLogger = {
+	debug(message?: any, ...optionalParams: any[]): void;
+	info(message?: any, ...optionalParams: any[]): void;
+	warn(message?: any, ...optionalParams: any[]): void;
+	error(message?: any, ...optionalParams: any[]): void;
+};
